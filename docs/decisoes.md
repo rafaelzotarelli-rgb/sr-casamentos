@@ -66,7 +66,8 @@ Registro das decisões e do motivo de cada uma. Decisões novas entram no fim; d
 
 ## D14 — Identificadores provisórios
 **Decisão:** enquanto o nome e o domínio não estão definidos, o app usa identificadores de desenvolvimento configurados em um só lugar (`app.config.ts`, via variáveis de ambiente).
-**Motivo:** o nome do produto ainda pode mudar; o bundle ID definitivo precisa ser decidido antes do primeiro envio às lojas porque não pode ser trocado depois.
+**Motivo:** o bundle ID definitivo precisa ser decidido antes do primeiro envio às lojas porque não pode ser trocado depois.
+**Atualização (20/10/2026):** o nome **Sr. Casamentos** está confirmado. O domínio ainda não foi registrado; o bundle ID definitivo será derivado dele.
 
 ## D15 — Builds sem Mac
 **Decisão:** builds de iOS pelo EAS Build na nuvem. Testes iniciais no tablet Android; no iPhone depois da conta Apple Developer.
