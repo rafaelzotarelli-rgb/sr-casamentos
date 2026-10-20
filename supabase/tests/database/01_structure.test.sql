@@ -2,7 +2,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 
-select plan(6);
+select plan(8);
 
 select is_empty(
   $$
@@ -67,6 +67,18 @@ select is(
   (select count(*)::int from public.plan_capabilities),
   7,
   'os 7 planos estão cadastrados'
+);
+
+select is(
+  private.before_user_created('{"user": {"app_metadata": {"provider": "email"}}}') -> 'error' ->> 'http_code',
+  '403',
+  'cadastro por e-mail é recusado'
+);
+
+select is(
+  private.before_user_created('{"user": {"app_metadata": {"provider": "google"}}}'),
+  '{}'::jsonb,
+  'cadastro pelo Google é aceito'
 );
 
 select * from finish();
