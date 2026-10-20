@@ -11,6 +11,13 @@ updates:
     groups:
       dev-tooling:
         dependency-type: development
+    ignore:
+      # typescript-eslint ainda não suporta TypeScript 7 (docs/decisoes.md, D18).
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+      # Os tipos acompanham a versão do Node usada no projeto e no CI (24).
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:
