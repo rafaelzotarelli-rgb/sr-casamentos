@@ -1,5 +1,24 @@
 import { describe, expect, it } from 'vitest';
-import { daysUntil, isActiveEvent, todayInSaoPaulo } from './dates';
+import { daysUntil, isActiveEvent, maskBrDate, parseBrDate, todayInSaoPaulo } from './dates';
+
+describe('datas digitadas no formato brasileiro', () => {
+  it('converte DD/MM/AAAA para ISO', () => {
+    expect(parseBrDate('15/05/2027')).toBe('2027-05-15');
+  });
+
+  it('rejeita datas inexistentes ou incompletas', () => {
+    expect(parseBrDate('30/02/2027')).toBeNull();
+    expect(parseBrDate('15/5/2027')).toBeNull();
+    expect(parseBrDate('')).toBeNull();
+  });
+
+  it('aplica a máscara enquanto a pessoa digita', () => {
+    expect(maskBrDate('15')).toBe('15');
+    expect(maskBrDate('150')).toBe('15/0');
+    expect(maskBrDate('15052027')).toBe('15/05/2027');
+    expect(maskBrDate('15/05/2027999')).toBe('15/05/2027');
+  });
+});
 
 describe('datas no fuso de São Paulo', () => {
   it('às 23h30 de São Paulo ainda é o mesmo dia (já é o dia seguinte em UTC)', () => {

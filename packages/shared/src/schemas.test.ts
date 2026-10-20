@@ -1,5 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { formatBRL, reaisToCents } from './money';
+import { formatBRL, parseBrMoney, reaisToCents } from './money';
+
+describe('valor digitado em reais', () => {
+  it.each([
+    ['65.500,00', 6_550_000],
+    ['65500,5', 6_550_050],
+    ['R$ 1.234', 123_400],
+    ['65.500', 6_550_000],
+    ['80000.5', 8_000_050],
+    ['80000', 8_000_000],
+  ])('%s → %i centavos', (input, cents) => {
+    expect(parseBrMoney(input)).toBe(cents);
+  });
+
+  it.each(['', 'abc', '1,2,3', '10,999', '-5'])('rejeita "%s"', (input) => {
+    expect(parseBrMoney(input)).toBeNull();
+  });
+});
 import { inviteTokenSchema, onboardingSchema } from './schemas';
 
 const valid = {

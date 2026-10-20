@@ -76,5 +76,11 @@ export const inviteTokenSchema = z.string().regex(/^[A-Za-z0-9_-]{43}$/, 'Convit
 /** Prazo de validade padrão dos convites. */
 export const INVITE_TTL_DAYS = 7;
 
+/**
+ * Versão dos Termos de Uso e da Política de Privacidade aceita no cadastro.
+ * Mude ao publicar uma versão nova: o consentimento é registrado por versão.
+ */
+export const LEGAL_DOCS_VERSION = '2026-10-rascunho';
+
 /** Carência antes da exclusão definitiva da conta (docs/decisoes.md, D09). */
 export const ACCOUNT_DELETION_GRACE_DAYS = 30;
