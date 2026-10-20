@@ -1,0 +1,37 @@
+# dependências e builds
+node_modules/
+.pnpm-store/
+.turbo/
+dist/
+build/
+.next/
+out/
+coverage/
+
+# Expo / React Native
+.expo/
+apps/mobile/ios/
+apps/mobile/android/
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# segredos
+.env
+.env.*
+!.env.example
+*.pem
+
+# sistema e editores
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea/
