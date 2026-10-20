@@ -43,3 +43,6 @@ next-env.d.ts
 # Expo
 expo-env.d.ts
 .expo/
+
+# Configuração local do Claude Code
+.claude/

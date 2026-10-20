@@ -135,3 +135,25 @@ Registro das decisões e do motivo de cada uma. Decisões novas entram no fim; d
 
 **Decisão:** na Etapa 1, o app do celular é para noivos (e família). Convites de equipe são aceitos no web; o app do assessor chega com o modo "Dia do evento" (Etapa 6).
 **Motivo:** o painel web cobre o trabalho do assessor nas etapas 1–5; evita duas interfaces de gestão ao mesmo tempo.
+
+## D25 — Login por e-mail com confirmação (revisa D08 e D22)
+
+**Decisão:** além de Google e Apple, qualquer pessoa pode entrar com o e-mail: recebe um código de 6 dígitos (e um link) e só acessa depois de confirmar. Não há senha; a senha continua só para contas demo/admin. Google e Apple não pedem confirmação extra porque já entregam o e-mail verificado.
+**Motivo:** pedido do responsável pelo produto — noivos convidados pelo assessor precisam poder usar um e-mail próprio. Exigir que o e-mail seja igual ao cadastrado pelo assessor foi descartado: quem usa "Ocultar meu e-mail" da Apple recebe outro endereço e ficaria bloqueado.
+**Atenção:** em produção o Supabase precisa de um provedor de e-mail próprio (SMTP); o padrão envia pouquíssimos e-mails por hora.
+
+## D26 — Destino por perfil depois do login
+
+**Decisão:** `/inicio` decide: quem é da assessoria vai ao painel; noivos/família vão a `/casamento`; quem não tem vínculo escolhe "Vamos nos casar" (cria o casamento sem assessor) ou "Sou assessor(a)". O painel nunca obriga ninguém a criar assessoria.
+**Motivo:** a noiva era forçada a cadastrar uma "assessoria" para entrar no web e passava a ver limites de eventos ativos, que só existem no plano do assessor. Noivos têm um casamento e plano por casamento (briefing, seção 5).
+**Escopo:** a área dos noivos no web mostra o resumo, edita os dados e convida o par; o planejamento completo (Etapa 2 em diante) fica no app, como no briefing.
+
+## D27 — WhatsApp com DDI (E.164)
+
+**Decisão:** o telefone é guardado só com dígitos, no formato internacional (DDI + número, 8 a 15 dígitos). Para +55 o app valida DDD e o 9 do celular. O envio do convite usa o link `wa.me` (abre o WhatsApp de quem clica), sem a API paga.
+**Motivo:** noivos podem ter número estrangeiro; o mesmo formato serve para a API oficial do WhatsApp na Etapa 4.
+
+## D28 — Assessoria não aceita convite de noivos do próprio casamento
+
+**Decisão:** `accept_invite` recusa convites de noivo/parceiro quando o usuário é da assessoria do casamento; a página do convite mostra com qual conta a pessoa está e oferece trocar.
+**Motivo:** em teste, o assessor abriu o link no mesmo navegador e "gastou" o convite dos noivos, virando noivo do próprio casamento.
