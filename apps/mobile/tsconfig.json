@@ -1,0 +1,15 @@
+{
+  "extends": ["../../tsconfig.base.json", "expo/tsconfig.base.json"],
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "types": ["node"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "app.config.ts", ".expo/types/**/*.ts", "expo-env.d.ts"]
+}

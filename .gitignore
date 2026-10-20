@@ -39,3 +39,7 @@ Thumbs.db
 # Next.js
 next-env.d.ts
 *.tsbuildinfo
+
+# Expo
+expo-env.d.ts
+.expo/
