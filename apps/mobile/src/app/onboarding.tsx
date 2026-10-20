@@ -24,6 +24,7 @@ export default function Onboarding() {
   const [date, setDate] = useState('');
   const [noDate, setNoDate] = useState(false);
   const [city, setCity] = useState('');
+  const [venue, setVenue] = useState('');
   const [guests, setGuests] = useState('');
   const [budget, setBudget] = useState('');
   const [style, setStyle] = useState<WeddingStyle | null>(null);
@@ -36,6 +37,7 @@ export default function Onboarding() {
     partner2Name: partner2,
     weddingDate,
     city,
+    ...(venue.trim() ? { venueName: venue } : {}),
     estimatedGuests: Number(guests),
     // NaN faz o schema recusar com "Informe um valor."
     estimatedBudgetCents: parseBrMoney(budget) ?? Number.NaN,
@@ -47,7 +49,7 @@ export default function Onboarding() {
     const result = onboardingSchema.safeParse(input);
     const fieldsByStep: (keyof typeof input)[][] = [
       ['partner1Name', 'partner2Name'],
-      ['weddingDate', 'city'],
+      ['weddingDate', 'city', 'venueName'],
       ['estimatedGuests', 'estimatedBudgetCents'],
       ['style'],
     ];
@@ -79,6 +81,7 @@ export default function Onboarding() {
       p_estimated_guests: parsed.estimatedGuests,
       p_estimated_budget_cents: parsed.estimatedBudgetCents,
       p_style: parsed.style,
+      ...(parsed.venueName ? { p_venue_name: parsed.venueName } : {}),
     });
     setSaving(false);
     if (rpcError) setError(errorMessage(rpcError));
@@ -131,6 +134,12 @@ export default function Onboarding() {
             />
             <Body>Ainda não definimos a data</Body>
           </View>
+          <TextField
+            label="Local (opcional)"
+            placeholder="Ex.: Fazenda Serra dos Cocais"
+            value={venue}
+            onChangeText={setVenue}
+          />
           <TextField label="Cidade" value={city} onChangeText={setCity} />
         </>
       ) : null}

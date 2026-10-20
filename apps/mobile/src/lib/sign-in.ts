@@ -2,6 +2,7 @@
 // Exige build de desenvolvimento (não funciona no Expo Go).
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from 'expo-crypto';
+import { z } from 'zod';
 import { supabase } from './supabase';
 
 export type SignInResult = { ok: true } | { ok: false; message: string | null };
@@ -30,6 +31,39 @@ export async function signInWithGoogle(): Promise<SignInResult> {
   } catch {
     return { ok: false, message: FAILED };
   }
+}
+
+/** Envia código de confirmação; na primeira vez cria a conta (só utilizável após confirmar). */
+export async function sendEmailCode(email: string): Promise<SignInResult> {
+  const parsed = z.email().safeParse(email.trim().toLowerCase());
+  if (!parsed.success) return { ok: false, message: 'Digite um e-mail válido.' };
+  const { error } = await supabase.auth.signInWithOtp({
+    email: parsed.data,
+    options: { shouldCreateUser: true },
+  });
+  if (!error) return { ok: true };
+  return {
+    ok: false,
+    message:
+      error.status === 429
+        ? 'Muitos pedidos em pouco tempo. Aguarde um minuto e tente de novo.'
+        : 'Não foi possível enviar o código. Tente novamente.',
+  };
+}
+
+export async function verifyEmailCode(email: string, code: string): Promise<SignInResult> {
+  const { error } = await supabase.auth.verifyOtp({
+    email: email.trim().toLowerCase(),
+    token: code,
+    type: 'email',
+  });
+  return error ? { ok: false, message: 'Código inválido ou expirado.' } : { ok: true };
+}
+
+/** Só contas demo/admin (D08). */
+export async function signInWithPassword(email: string, password: string): Promise<SignInResult> {
+  const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+  return error ? { ok: false, message: 'E-mail ou senha inválidos.' } : { ok: true };
 }
 
 export async function signInWithApple(): Promise<SignInResult> {

@@ -74,7 +74,9 @@ export default function Home() {
         ) : (
           <Subtitle>Casamento realizado</Subtitle>
         )}
-        {wedding.city ? <Body muted>{wedding.city}</Body> : null}
+        {wedding.venue_name || wedding.city ? (
+          <Body muted>{[wedding.venue_name, wedding.city].filter(Boolean).join(' · ')}</Body>
+        ) : null}
         {agencyName ? <Body>Assessoria: {agencyName}</Body> : null}
       </Card>
 
