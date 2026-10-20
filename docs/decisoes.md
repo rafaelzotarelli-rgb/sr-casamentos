@@ -115,3 +115,23 @@ Registro das decisões e do motivo de cada uma. Decisões novas entram no fim; d
 
 **Decisão:** `alter default privileges` remove as permissões automáticas que o Supabase dá a `anon`/`authenticated` em tabelas e funções novas; cada migration concede o necessário explicitamente.
 **Motivo:** o teste de estrutura pegou a tabela `audit_log` recebendo acesso do anônimo por padrão. Com a revogação, esquecer um GRANT resulta em "sem acesso", nunca em "acesso demais".
+
+## D21 — Exceções da auditoria de dependências
+
+**Decisão:** três alertas (node-forge, braces, uuid) ficam ignorados em `pnpm-workspace.yaml`, com motivo e data de revisão.
+**Motivo:** vêm de ferramentas de build da Expo (`@expo/cli`, Metro), que rodam só no computador e no CI; nenhuma tem correção compatível. Ignorar alerta por alerta mantém o CI barrando qualquer vulnerabilidade nova.
+
+## D22 — Cadastro só por Google/Apple, com gancho no banco
+
+**Decisão:** o login por e-mail fica ligado no Supabase, mas o gancho `before_user_created` recusa cadastros que não sejam Google ou Apple. Contas demo/admin são criadas direto no banco.
+**Motivo:** nesta versão do Supabase, desligar o cadastro por e-mail também desliga o login por e-mail, o que impediria as contas demo exigidas pelas lojas.
+
+## D23 — Consentimento por versão dos documentos
+
+**Decisão:** antes de usar o app (noivos) ou criar a assessoria (web), o usuário aceita Termos e Política na versão `LEGAL_DOCS_VERSION`; o aceite fica em `consents`. Ao publicar uma versão nova, basta mudar a constante para pedir novo aceite.
+**Motivo:** LGPD — consentimento claro e comprovável. Os textos vivem em `docs/legal/` e o site os exibe a partir dali (fonte única para a revisão jurídica).
+
+## D24 — Equipe do assessor usa o painel web
+
+**Decisão:** na Etapa 1, o app do celular é para noivos (e família). Convites de equipe são aceitos no web; o app do assessor chega com o modo "Dia do evento" (Etapa 6).
+**Motivo:** o painel web cobre o trabalho do assessor nas etapas 1–5; evita duas interfaces de gestão ao mesmo tempo.

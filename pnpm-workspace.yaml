@@ -5,3 +5,13 @@ packages:
 # React Native/Metro funciona de forma mais previsível com node_modules "achatado".
 # Ver docs/decisoes.md (D17).
 nodeLinker: hoisted
+
+# Exceções da auditoria de dependências (docs/decisoes.md, D21). Todas vêm de
+# ferramentas de build da Expo (@expo/cli, Metro), que rodam só na máquina de
+# desenvolvimento e no CI — nada disso vai dentro do app nem do servidor.
+# Revisar a cada atualização do Expo SDK (próxima revisão: 2026-12-01).
+auditConfig:
+  ignoreGhsas:
+    - GHSA-86w9-cpqp-85rv # node-forge: assinatura de código do @expo/cli; sem versão corrigida
+    - GHSA-vfj7-8cjw-p6xm # braces: busca de arquivos do Metro; sem versão corrigida
+    - GHSA-w5hq-g745-h8pq # uuid: só v3/v5/v6 com buffer; o pacote xcode usa a v4
