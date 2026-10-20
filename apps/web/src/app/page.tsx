@@ -15,7 +15,8 @@ export default function Home() {
       </div>
       <p className="muted">
         Noivos: use o app Sr. Casamentos no iPhone ou Android.{' '}
-        <Link href="/excluir-conta">Excluir minha conta</Link>
+        <Link href="/excluir-conta">Excluir minha conta</Link> ·{' '}
+        <Link href="/privacidade">Privacidade</Link> · <Link href="/termos">Termos de uso</Link>
       </p>
     </main>
   );

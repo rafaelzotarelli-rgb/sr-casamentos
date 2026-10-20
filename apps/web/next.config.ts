@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
   // Pacotes do monorepo são TypeScript puro, sem build próprio.
   transpilePackages: ['@sr/shared', '@sr/tokens', '@sr/db'],
   poweredByHeader: false,
+  // Textos legais lidos de docs/legal em tempo de execução.
+  outputFileTracingIncludes: {
+    '/privacidade': ['../../docs/legal/*.md'],
+    '/termos': ['../../docs/legal/*.md'],
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

@@ -1,6 +1,6 @@
 'use server';
 
-import { errorMessage, plannerWeddingSchema, reaisToCents } from '@sr/shared';
+import { errorMessage, LEGAL_DOCS_VERSION, plannerWeddingSchema, reaisToCents } from '@sr/shared';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
@@ -15,8 +15,21 @@ const agencyNameSchema = z.string().trim().min(2, 'Use pelo menos 2 letras.').ma
 export async function createAgency(_prev: FormState, formData: FormData): Promise<FormState> {
   const name = agencyNameSchema.safeParse(formData.get('name'));
   if (!name.success) return { error: name.error.issues[0]?.message ?? 'Nome inválido.' };
+  if (formData.get('consent') !== 'on') {
+    return { error: 'Para continuar, aceite os Termos de Uso e a Política de Privacidade.' };
+  }
 
-  const { supabase } = await getPanelContext();
+  const { supabase, user } = await getPanelContext();
+  const { error: consentError } = await supabase.from('consents').upsert(
+    (['terms', 'privacy'] as const).map((document) => ({
+      user_id: user.id,
+      document,
+      version: LEGAL_DOCS_VERSION,
+    })),
+    { onConflict: 'user_id,document,version', ignoreDuplicates: true },
+  );
+  if (consentError) return { error: errorMessage(consentError) };
+
   const { error } = await supabase.rpc('create_agency', { p_name: name.data });
   if (error) return { error: errorMessage(error) };
 
