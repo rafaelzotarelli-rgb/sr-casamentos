@@ -111,6 +111,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"budget_categories": {
+                  Row: {
+                    "created_at": string,"id": string,"key": string | null,"name": string,"planned_cents": number,"sort_order": number,"updated_at": string,"wedding_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"key"?: string | null,"name": string,"planned_cents"?: number,"sort_order"?: number,"updated_at"?: string,"wedding_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"key"?: string | null,"name"?: string,"planned_cents"?: number,"sort_order"?: number,"updated_at"?: string,"wedding_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "budget_categories_wedding_id_fkey"
+      columns: ["wedding_id"]
+isOneToOne: false
+      referencedRelation: "weddings"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"consents": {
                   Row: {
                     "accepted_at": string,"created_at": string,"document": string,"id": string,"updated_at": string,"user_id": string,"version": string
@@ -143,6 +163,26 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "weddings"
       referencedColumns: ["id"]
+    }
+                  ]
+                },"family_permissions": {
+                  Row: {
+                    "created_at": string,"level": Database["public"]['Enums']["access_level"],"module": string,"updated_at": string,"user_id": string,"wedding_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"level": Database["public"]['Enums']["access_level"],"module": string,"updated_at"?: string,"user_id": string,"wedding_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"level"?: Database["public"]['Enums']["access_level"],"module"?: string,"updated_at"?: string,"user_id"?: string,"wedding_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "family_permissions_wedding_id_user_id_fkey"
+      columns: ["wedding_id","user_id"]
+isOneToOne: false
+      referencedRelation: "wedding_members"
+      referencedColumns: ["wedding_id","user_id"]
     }
                   ]
                 },"invites": {
@@ -213,6 +253,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"tasks": {
+                  Row: {
+                    "assignee": Database["public"]['Enums']["task_assignee"],"category": string,"completed_at": string | null,"completed_by": string | null,"created_at": string,"created_by": string | null,"done": boolean,"due_date": string | null,"id": string,"notes": string | null,"origin": Database["public"]['Enums']["task_origin"],"phase": string | null,"title": string,"updated_at": string,"wedding_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "assignee"?: Database["public"]['Enums']["task_assignee"],"category"?: string,"completed_at"?: string | null,"completed_by"?: string | null,"created_at"?: string,"created_by"?: string | null,"done"?: boolean,"due_date"?: string | null,"id"?: string,"notes"?: string | null,"origin"?: Database["public"]['Enums']["task_origin"],"phase"?: string | null,"title": string,"updated_at"?: string,"wedding_id": string
+                  }
+                  Update: {
+                    "assignee"?: Database["public"]['Enums']["task_assignee"],"category"?: string,"completed_at"?: string | null,"completed_by"?: string | null,"created_at"?: string,"created_by"?: string | null,"done"?: boolean,"due_date"?: string | null,"id"?: string,"notes"?: string | null,"origin"?: Database["public"]['Enums']["task_origin"],"phase"?: string | null,"title"?: string,"updated_at"?: string,"wedding_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "tasks_wedding_id_fkey"
+      columns: ["wedding_id"]
+isOneToOne: false
+      referencedRelation: "weddings"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"wedding_members": {
                   Row: {
                     "created_at": string,"role": Database["public"]['Enums']["wedding_role"],"updated_at": string,"user_id": string,"wedding_id": string
@@ -235,14 +295,14 @@ isOneToOne: false
                   ]
                 },"weddings": {
                   Row: {
-                    "agency_id": string | null,"city": string | null,"contact_email": string | null,"contact_phone": string | null,"couple_plan_code": string,"created_at": string,"created_by": string | null,"deletion_scheduled_for": string | null,"estimated_budget_cents": number | null,"estimated_guests": number | null,"id": string,"partner1_name": string,"partner2_name": string,"style": string | null,"updated_at": string,"venue_name": string | null,"wedding_date": string | null
+                    "agency_id": string | null,"city": string | null,"contact_email": string | null,"contact_phone": string | null,"couple_plan_code": string,"created_at": string,"created_by": string | null,"deletion_scheduled_for": string | null,"estimated_budget_cents": number | null,"estimated_guests": number | null,"id": string,"partner1_name": string,"partner2_name": string,"starter_initialized_at": string | null,"style": string | null,"updated_at": string,"venue_name": string | null,"wedding_date": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "agency_id"?: string | null,"city"?: string | null,"contact_email"?: string | null,"contact_phone"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name": string,"partner2_name": string,"style"?: string | null,"updated_at"?: string,"venue_name"?: string | null,"wedding_date"?: string | null
+                    "agency_id"?: string | null,"city"?: string | null,"contact_email"?: string | null,"contact_phone"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name": string,"partner2_name": string,"starter_initialized_at"?: string | null,"style"?: string | null,"updated_at"?: string,"venue_name"?: string | null,"wedding_date"?: string | null
                   }
                   Update: {
-                    "agency_id"?: string | null,"city"?: string | null,"contact_email"?: string | null,"contact_phone"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name"?: string,"partner2_name"?: string,"style"?: string | null,"updated_at"?: string,"venue_name"?: string | null,"wedding_date"?: string | null
+                    "agency_id"?: string | null,"city"?: string | null,"contact_email"?: string | null,"contact_phone"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name"?: string,"partner2_name"?: string,"starter_initialized_at"?: string | null,"style"?: string | null,"updated_at"?: string,"venue_name"?: string | null,"wedding_date"?: string | null
                   }
                   Relationships: [
                     {
@@ -286,8 +346,14 @@ isOneToOne: false
 "delete_agency_wedding":
 { Args: { "p_wedding_id": string }; Returns: undefined
                            },
+"initialize_wedding_plan":
+{ Args: { "p_budget": Json,"p_tasks": Json,"p_wedding_id": string }; Returns: boolean
+                           },
 "invite_preview":
 { Args: { "p_token": string }; Returns: Json
+                           },
+"my_module_access":
+{ Args: { "p_wedding_id": string }; Returns: Json
                            },
 "request_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: string
@@ -297,7 +363,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "access_level": "none"|"view"|"edit","agency_role": "owner"|"staff","invite_kind": "couple"|"partner"|"staff","wedding_role": "couple"|"family"
+            "access_level": "none"|"view"|"edit","agency_role": "owner"|"staff","invite_kind": "couple"|"partner"|"staff","task_assignee": "both"|"partner1"|"partner2"|"family"|"planner","task_origin": "manual"|"template"|"contract"|"planner","wedding_role": "couple"|"family"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -417,7 +483,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "access_level": ["none", "view", "edit"],"agency_role": ["owner", "staff"],"invite_kind": ["couple", "partner", "staff"],"wedding_role": ["couple", "family"]
+            "access_level": ["none", "view", "edit"],"agency_role": ["owner", "staff"],"invite_kind": ["couple", "partner", "staff"],"task_assignee": ["both", "partner1", "partner2", "family", "planner"],"task_origin": ["manual", "template", "contract", "planner"],"wedding_role": ["couple", "family"]
           }
         }
 } as const

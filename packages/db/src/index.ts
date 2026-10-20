@@ -21,3 +21,6 @@ export type AcceptInviteResult =
       agency_id: string | null;
     }
   | { ok: false; error: string };
+export type Task = Tables<'tasks'>;
+export type BudgetCategory = Tables<'budget_categories'>;
+export type AccessLevel = Enums<'access_level'>;
