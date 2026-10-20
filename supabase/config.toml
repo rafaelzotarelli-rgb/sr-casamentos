@@ -162,9 +162,11 @@ site_url = "http://127.0.0.1:3000"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
+# "**" aceita o ?next=… do retorno (ex.: voltar ao convite depois de confirmar o e-mail).
+# Na nuvem: Authentication → URL Configuration → Redirect URLs, com o domínio definitivo.
 additional_redirect_urls = [
-  "http://127.0.0.1:3000/auth/callback",
-  "http://localhost:3000/auth/callback",
+  "http://127.0.0.1:3000/auth/callback**",
+  "http://localhost:3000/auth/callback**",
   "srcasamentos://**",
 ]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
@@ -224,14 +226,14 @@ web3 = 30
 # secret = ""
 
 [auth.email]
-# Ligado para o login das contas demo/admin; o cadastro por e-mail é recusado
-# pelo gancho before_user_created (migration 20261020120500_auth_hook.sql, D08).
+# Cadastro e login por e-mail sem senha (código + link), sempre com confirmação (D25).
+# Contas demo/admin continuam entrando com senha.
 enable_signup = true
 # If enabled, a user will be required to confirm any email change on both the old, and new email
 # addresses. If disabled, only the new email is required to confirm.
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
-enable_confirmations = false
+enable_confirmations = true
 # If enabled, users will need to reauthenticate or have logged in recently to change their password.
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
@@ -251,10 +253,14 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
-# Uncomment to customize email template
-# [auth.email.template.invite]
-# subject = "You have been invited"
-# content_path = "./supabase/templates/invite.html"
+# Modelos em português. Na nuvem, copie o mesmo conteúdo em Authentication → Emails.
+[auth.email.template.magic_link]
+subject = "Seu código de acesso ao Sr. Casamentos"
+content_path = "./supabase/templates/acesso.html"
+
+[auth.email.template.confirmation]
+subject = "Confirme seu e-mail no Sr. Casamentos"
+content_path = "./supabase/templates/acesso.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]

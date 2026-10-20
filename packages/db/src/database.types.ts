@@ -235,14 +235,14 @@ isOneToOne: false
                   ]
                 },"weddings": {
                   Row: {
-                    "agency_id": string | null,"city": string | null,"couple_plan_code": string,"created_at": string,"created_by": string | null,"deletion_scheduled_for": string | null,"estimated_budget_cents": number | null,"estimated_guests": number | null,"id": string,"partner1_name": string,"partner2_name": string,"style": string | null,"updated_at": string,"wedding_date": string | null
+                    "agency_id": string | null,"city": string | null,"contact_email": string | null,"contact_phone": string | null,"couple_plan_code": string,"created_at": string,"created_by": string | null,"deletion_scheduled_for": string | null,"estimated_budget_cents": number | null,"estimated_guests": number | null,"id": string,"partner1_name": string,"partner2_name": string,"style": string | null,"updated_at": string,"venue_name": string | null,"wedding_date": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "agency_id"?: string | null,"city"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name": string,"partner2_name": string,"style"?: string | null,"updated_at"?: string,"wedding_date"?: string | null
+                    "agency_id"?: string | null,"city"?: string | null,"contact_email"?: string | null,"contact_phone"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name": string,"partner2_name": string,"style"?: string | null,"updated_at"?: string,"venue_name"?: string | null,"wedding_date"?: string | null
                   }
                   Update: {
-                    "agency_id"?: string | null,"city"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name"?: string,"partner2_name"?: string,"style"?: string | null,"updated_at"?: string,"wedding_date"?: string | null
+                    "agency_id"?: string | null,"city"?: string | null,"contact_email"?: string | null,"contact_phone"?: string | null,"couple_plan_code"?: string,"created_at"?: string,"created_by"?: string | null,"deletion_scheduled_for"?: string | null,"estimated_budget_cents"?: number | null,"estimated_guests"?: number | null,"id"?: string,"partner1_name"?: string,"partner2_name"?: string,"style"?: string | null,"updated_at"?: string,"venue_name"?: string | null,"wedding_date"?: string | null
                   }
                   Relationships: [
                     {
@@ -275,13 +275,19 @@ isOneToOne: false
 { Args: { "p_name": string }; Returns: string
                            },
 "create_agency_wedding":
-{ Args: { "p_agency_id": string,"p_city"?: string,"p_estimated_budget_cents"?: number,"p_estimated_guests"?: number,"p_partner1_name": string,"p_partner2_name": string,"p_style"?: string,"p_wedding_date": string }; Returns: string
+{ Args: { "p_agency_id": string,"p_city"?: string,"p_contact_email"?: string,"p_contact_phone"?: string,"p_estimated_budget_cents"?: number,"p_estimated_guests"?: number,"p_partner1_name": string,"p_partner2_name": string,"p_style"?: string,"p_venue_name"?: string,"p_wedding_date": string }; Returns: string
                            },
 "create_couple_wedding":
-{ Args: { "p_city": string,"p_estimated_budget_cents": number,"p_estimated_guests": number,"p_partner1_name": string,"p_partner2_name": string,"p_style": string,"p_wedding_date": string }; Returns: string
+{ Args: { "p_city": string,"p_estimated_budget_cents": number,"p_estimated_guests": number,"p_partner1_name": string,"p_partner2_name": string,"p_style": string,"p_venue_name"?: string,"p_wedding_date": string }; Returns: string
                            },
 "create_invite":
 { Args: { "p_agency_id"?: string,"p_kind": Database["public"]['Enums']["invite_kind"],"p_wedding_id"?: string }; Returns: string
+                           },
+"delete_agency_wedding":
+{ Args: { "p_wedding_id": string }; Returns: undefined
+                           },
+"invite_preview":
+{ Args: { "p_token": string }; Returns: Json
                            },
 "request_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: string

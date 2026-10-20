@@ -2,7 +2,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 
-select plan(8);
+select plan(9);
 
 select is_empty(
   $$
@@ -45,8 +45,9 @@ select is_empty(
     join pg_namespace n on n.oid = p.pronamespace
     where n.nspname = 'public'
       and has_function_privilege('anon', p.oid, 'execute')
+      and p.proname <> 'invite_preview'
   $$,
-  'anon não executa nenhuma função de public'
+  'anon só executa a prévia de convite (e nenhuma outra função de public)'
 );
 
 select is_empty(
@@ -70,9 +71,15 @@ select is(
 );
 
 select is(
-  private.before_user_created('{"user": {"app_metadata": {"provider": "email"}}}') -> 'error' ->> 'http_code',
+  private.before_user_created('{"user": {"app_metadata": {"provider": "phone"}}}') -> 'error' ->> 'http_code',
   '403',
-  'cadastro por e-mail é recusado'
+  'cadastro por telefone (ou outro provedor) é recusado'
+);
+
+select is(
+  private.before_user_created('{"user": {"app_metadata": {"provider": "email"}}}'),
+  '{}'::jsonb,
+  'cadastro por e-mail (com confirmação) é aceito'
 );
 
 select is(
