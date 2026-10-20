@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getUserContext } from '@/lib/agency';
+import { env } from '@/lib/env';
 import { formatWeddingDate } from '@/lib/format';
 import { signOut } from '../painel/actions';
 import { ConsentForm } from './consent-form';
@@ -95,9 +96,14 @@ export default async function CouplePage({
       <div className="card stack">
         <h2>Planejamento</h2>
         <p className="muted">
-          Tarefas, orçamento, pagamentos, convidados, fornecedores e o assistente ficam no app Sr.
+          Tarefas, orçamento, convidados, fornecedores e o assistente: no navegador ou no app Sr.
           Casamentos para iPhone e Android, entrando com esta mesma conta.
         </p>
+        <div>
+          <a className="button" href={env.appUrl}>
+            Abrir o planejamento
+          </a>
+        </div>
       </div>
 
       <div className="row">

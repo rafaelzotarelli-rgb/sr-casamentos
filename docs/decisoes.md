@@ -157,3 +157,9 @@ Registro das decisões e do motivo de cada uma. Decisões novas entram no fim; d
 
 **Decisão:** `accept_invite` recusa convites de noivo/parceiro quando o usuário é da assessoria do casamento; a página do convite mostra com qual conta a pessoa está e oferece trocar.
 **Motivo:** em teste, o assessor abriu o link no mesmo navegador e "gastou" o convite dos noivos, virando noivo do próprio casamento.
+
+## D29 — Noivos também no navegador, com o mesmo app (Expo web)
+
+**Decisão:** as telas dos noivos (Etapa 2 em diante) são escritas uma vez no app Expo e publicadas também para navegador (React Native Web), com layout adaptado a telas largas (menu lateral). O Next.js continua com o painel do assessor e as páginas públicas (site do casamento, RSVP, convites, páginas legais); a página `/casamento` do Next leva ao app web.
+**Motivo:** pedido do responsável pelo produto (noivos completos no navegador). Escrever cada funcionalidade duas vezes dobraria o custo e criaria divergências entre as versões.
+**Revisa:** D26 (escopo da área dos noivos no web).

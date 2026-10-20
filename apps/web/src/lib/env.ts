@@ -11,4 +11,6 @@ export const env = {
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
   ),
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+  /** App dos noivos no navegador (Expo web, D29). */
+  appUrl: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:8081',
 };
