@@ -27,7 +27,10 @@ export const baseConfig = tseslint.config(
     },
     rules: {
       '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
       eqeqeq: ['error', 'always'],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },

@@ -17,7 +17,7 @@ describe('valor digitado em reais', () => {
     expect(parseBrMoney(input)).toBeNull();
   });
 });
-import { inviteTokenSchema, onboardingSchema } from './schemas';
+import { inviteTokenSchema, onboardingSchema, plannerWeddingSchema } from './schemas';
 
 const valid = {
   partner1Name: 'Ana',
@@ -55,6 +55,36 @@ describe('onboarding', () => {
   it('remove espaços dos nomes', () => {
     const parsed = onboardingSchema.parse({ ...valid, partner1Name: '  Ana  ' });
     expect(parsed.partner1Name).toBe('Ana');
+  });
+});
+
+describe('casamento cadastrado pelo assessor', () => {
+  const base = { partner1Name: 'Rafael', partner2Name: 'Luisa', weddingDate: null };
+
+  it('aceita local, e-mail e WhatsApp, normalizando o contato', () => {
+    const parsed = plannerWeddingSchema.parse({
+      ...base,
+      venueName: ' Fazenda Serra dos Cocais ',
+      contactEmail: 'Luisa@Exemplo.com',
+      contactPhone: '(19) 99123-4567',
+    });
+    expect(parsed.venueName).toBe('Fazenda Serra dos Cocais');
+    expect(parsed.contactEmail).toBe('luisa@exemplo.com');
+    expect(parsed.contactPhone).toBe('5519991234567');
+  });
+
+  it('aceita WhatsApp de outro país com DDI', () => {
+    const parsed = plannerWeddingSchema.parse({ ...base, contactPhone: '+351 912 345 678' });
+    expect(parsed.contactPhone).toBe('351912345678');
+  });
+
+  it('contato e local são opcionais', () => {
+    expect(plannerWeddingSchema.safeParse(base).success).toBe(true);
+  });
+
+  it('rejeita WhatsApp e e-mail inválidos', () => {
+    expect(plannerWeddingSchema.safeParse({ ...base, contactPhone: '1234' }).success).toBe(false);
+    expect(plannerWeddingSchema.safeParse({ ...base, contactEmail: 'luisa@' }).success).toBe(false);
   });
 });
 

@@ -1,5 +1,6 @@
 // Schemas zod usados no cliente (formulários) e no servidor (Edge Functions).
 import { z } from 'zod';
+import { normalizePhone } from './phone';
 
 export const WEDDING_STYLES = [
   'classico',
@@ -55,15 +56,43 @@ export const onboardingSchema = z.object({
     .min(0, 'O orçamento não pode ser negativo.')
     .max(100_000_000_00, 'Valor muito alto.'),
   style: z.enum(WEDDING_STYLES),
+  /** Local da cerimônia/festa, ex.: "Fazenda Serra dos Cocais". Opcional. */
+  venueName: z
+    .string()
+    .trim()
+    .min(2, 'Informe pelo menos 2 letras.')
+    .max(120, 'Use no máximo 120 caracteres.')
+    .optional(),
 });
 export type OnboardingInput = z.infer<typeof onboardingSchema>;
 
-/** Casamento criado pelo assessor: os mesmos campos, com cidade e orçamento opcionais. */
+/**
+ * WhatsApp com DDI: "+55 (19) 99123-4567", "+351 912 345 678" ou, sem "+",
+ * número brasileiro com DDD. Resultado: DDI + número só com dígitos.
+ */
+export const phoneSchema = z.string().transform((value, ctx) => {
+  const normalized = normalizePhone(value);
+  if (!normalized) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'WhatsApp inválido. Confira o DDI e o número (no Brasil, com DDD).',
+    });
+    return z.NEVER;
+  }
+  return normalized;
+});
+
+/**
+ * Casamento criado pelo assessor: os mesmos campos, com cidade e orçamento
+ * opcionais, mais o contato de um dos noivos (para enviar o convite).
+ */
 export const plannerWeddingSchema = onboardingSchema.extend({
   city: onboardingSchema.shape.city.optional(),
   estimatedGuests: onboardingSchema.shape.estimatedGuests.optional(),
   estimatedBudgetCents: onboardingSchema.shape.estimatedBudgetCents.optional(),
   style: onboardingSchema.shape.style.optional(),
+  contactEmail: z.email('E-mail inválido.').max(254).toLowerCase().optional(),
+  contactPhone: phoneSchema.optional(),
 });
 export type PlannerWeddingInput = z.infer<typeof plannerWeddingSchema>;
 

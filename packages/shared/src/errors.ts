@@ -13,6 +13,8 @@ export const ERROR_MESSAGES: Record<string, string> = {
   ja_e_membro: 'Você já faz parte deste casamento ou equipe.',
   ja_tem_assessoria: 'Você já é dono de uma assessoria.',
   membro_nao_pertence_a_assessoria: 'Essa pessoa não faz parte da sua equipe.',
+  assessoria_nao_aceita_convite_de_noivos:
+    'Você está com a conta da assessoria. Este convite é para os noivos: saia e entre com a conta de um deles.',
 };
 
 const FALLBACK = 'Algo deu errado. Tente novamente.';
