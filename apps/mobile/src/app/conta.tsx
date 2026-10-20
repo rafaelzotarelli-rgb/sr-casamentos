@@ -2,7 +2,7 @@ import { ACCOUNT_DELETION_GRACE_DAYS, errorMessage } from '@sr/shared';
 import { router } from 'expo-router';
 import * as Linking from 'expo-linking';
 import { useCallback, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { confirmAction } from '@/lib/confirm';
 import { Body, Button, Card, Notice, Screen, Subtitle } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
@@ -54,18 +54,12 @@ export default function Account() {
   }
 
   function confirmDeletion() {
-    Alert.alert(
+    confirmAction(
       'Excluir sua conta?',
       `A exclusão acontece em ${ACCOUNT_DELETION_GRACE_DAYS} dias. Até lá você pode cancelar aqui. ` +
         'Se o casamento tiver outra conta de noivos, ele continua com essa pessoa.',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Excluir conta',
-          style: 'destructive',
-          onPress: () => void rpc('request_account_deletion'),
-        },
-      ],
+      'Excluir conta',
+      () => void rpc('request_account_deletion'),
     );
   }
 

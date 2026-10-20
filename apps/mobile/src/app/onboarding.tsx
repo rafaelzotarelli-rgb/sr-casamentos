@@ -195,7 +195,14 @@ export default function Onboarding() {
         />
         {step > 0 ? (
           <Button label="Voltar" variant="secondary" onPress={() => setStep(step - 1)} />
-        ) : null}
+        ) : (
+          // Quem entrou com a conta errada não pode ficar preso no onboarding.
+          <Button
+            label="Sair e entrar com outra conta"
+            variant="secondary"
+            onPress={() => void supabase.auth.signOut({ scope: 'local' })}
+          />
+        )}
       </View>
     </Screen>
   );

@@ -111,14 +111,19 @@ export function Button({
 
 type FieldProps = TextInputProps & { label: string; error?: string | undefined };
 
-export function TextField({ label, error, ...input }: FieldProps) {
+export function TextField({ label, error, style, ...input }: FieldProps) {
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor={colors.textMuted}
-        style={[styles.input, error ? { borderColor: colors.alert } : null]}
+        style={[
+          styles.input,
+          error ? { borderColor: colors.alert } : null,
+          input.editable === false ? { color: colors.textMuted } : null,
+          style,
+        ]}
         {...input}
       />
       {error ? (
@@ -154,7 +159,15 @@ export function Chip({
 
 export const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  content: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
+  // Em telas largas o conteúdo não estica além de uma coluna confortável de leitura.
+  content: {
+    padding: spacing.lg,
+    gap: spacing.md,
+    flexGrow: 1,
+    width: '100%',
+    maxWidth: 960,
+    alignSelf: 'center',
+  },
   title: { fontFamily: fontFamily.heading, fontSize: fontSize.xxl, color: colors.text },
   subtitle: { fontFamily: fontFamily.heading, fontSize: fontSize.xl, color: colors.text },
   body: { fontFamily: fontFamily.body, fontSize: fontSize.md, color: colors.text, lineHeight: 22 },

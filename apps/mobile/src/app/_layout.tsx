@@ -4,7 +4,7 @@ import {
   Inter_600SemiBold,
   useFonts as useInter,
 } from '@expo-google-fonts/inter';
-import { Stack } from 'expo-router';
+import { router, Stack, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -14,15 +14,27 @@ import { colors } from '@/lib/theme';
 
 void SplashScreen.preventAutoHideAsync();
 
+// Telas abertas sem login. Todas as outras voltam ao login quando a sessão acaba
+// (sair, sair de todos os aparelhos, sessão expirada).
+const PUBLIC_ROUTES = new Set(['entrar', 'convite']);
+
 function RootStack() {
-  const { loading } = useAuth();
+  const { loading, session } = useAuth();
+  const segments = useSegments();
   const [frauncesLoaded] = useFraunces({ Fraunces_600SemiBold });
   const [interLoaded] = useInter({ Inter_400Regular, Inter_600SemiBold });
   const ready = frauncesLoaded && interLoaded && !loading;
+  const firstSegment = segments[0] ?? '';
 
   useEffect(() => {
     if (ready) void SplashScreen.hideAsync();
   }, [ready]);
+
+  useEffect(() => {
+    if (ready && !session && firstSegment && !PUBLIC_ROUTES.has(firstSegment)) {
+      router.replace('/entrar');
+    }
+  }, [ready, session, firstSegment]);
 
   if (!ready) return null;
 
