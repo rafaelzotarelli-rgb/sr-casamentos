@@ -71,9 +71,7 @@ export const INVITE_KINDS = ['couple', 'partner', 'staff'] as const;
 export type InviteKind = (typeof INVITE_KINDS)[number];
 
 /** Token de convite: 32 bytes em base64url (43 caracteres). */
-export const inviteTokenSchema = z
-  .string()
-  .regex(/^[A-Za-z0-9_-]{43}$/, 'Convite inválido.');
+export const inviteTokenSchema = z.string().regex(/^[A-Za-z0-9_-]{43}$/, 'Convite inválido.');
 
 /** Prazo de validade padrão dos convites. */
 export const INVITE_TTL_DAYS = 7;

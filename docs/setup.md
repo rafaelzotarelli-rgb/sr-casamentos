@@ -10,13 +10,13 @@ Passo a passo das contas e cadastros que **você** precisa fazer. Nada aqui é c
 
 Alguns itens demoram semanas e travam outros. Comece por eles:
 
-| Prioridade | Item | Por que começar já | Tempo típico |
-|---|---|---|---|
-| 1 | Decidir o **nome** e o **domínio** | Bundle ID, tela de consentimento do Google, nome no WhatsApp e verificação da Meta dependem disso | sua decisão |
-| 2 | **CNPJ** e **D-U-N-S** | Apple e Google (conta de organização) exigem | até ~30 dias |
-| 3 | **Meta Business** (verificação da empresa) | Aprovação pode levar semanas; exige site no domínio | 1–4 semanas |
-| 4 | **Apple Developer** e **Google Play Console** | Dependem do D-U-N-S | 1–3 semanas |
-| — | GitHub, Expo, Supabase dev | Rápidos; necessários já na Etapa 1 | minutos |
+| Prioridade | Item                                          | Por que começar já                                                                                | Tempo típico |
+| ---------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------ |
+| 1          | Decidir o **nome** e o **domínio**            | Bundle ID, tela de consentimento do Google, nome no WhatsApp e verificação da Meta dependem disso | sua decisão  |
+| 2          | **CNPJ** e **D-U-N-S**                        | Apple e Google (conta de organização) exigem                                                      | até ~30 dias |
+| 3          | **Meta Business** (verificação da empresa)    | Aprovação pode levar semanas; exige site no domínio                                               | 1–4 semanas  |
+| 4          | **Apple Developer** e **Google Play Console** | Dependem do D-U-N-S                                                                               | 1–3 semanas  |
+| —          | GitHub, Expo, Supabase dev                    | Rápidos; necessários já na Etapa 1                                                                | minutos      |
 
 **O que dá para fazer sem o nome definido:** toda a Etapa 1 roda localmente e no Android com identificadores provisórios de desenvolvimento (`*.dev`). O nome e o bundle ID definitivo precisam estar decididos **antes do primeiro envio às lojas** — o bundle ID não pode ser trocado depois de publicado.
 
@@ -25,19 +25,23 @@ Alguns itens demoram semanas e travam outros. Comece por eles:
 ## 1. CNPJ e número D-U-N-S
 
 ### Sobre o seu CNPJ atual (com outra atividade)
+
 Apple e Google aceitam qualquer pessoa jurídica regularmente constituída. O CNAE não é verificado pelas lojas, mas:
 
 - A **razão social aparece nas lojas como vendedor** do app ("Vendido por …").
 - A receita das vendas e assinaturas entra nesse CNPJ, então o enquadramento tributário precisa comportar venda de software/assinatura.
 
 **Opções (decida com seu contador):**
+
 - **A.** Usar o CNPJ atual e incluir um CNAE secundário de software (ex.: 6203-1/00 — desenvolvimento e licenciamento de programas não customizáveis; ou 6311-9/00 — tratamento de dados e hospedagem). Mais rápido.
 - **B.** Abrir um CNPJ novo só para o Sr. Casamentos. Separa riscos, contabilidade e facilita sócios/investimento no futuro, mas atrasa tudo que depende do D-U-N-S.
 
 ### O que é o D-U-N-S
+
 É um número de 9 dígitos, **gratuito**, emitido pela Dun & Bradstreet, que identifica empresas no mundo. A Apple e o Google usam para confirmar que a empresa existe e que o nome bate com o cadastro.
 
 ### Passo a passo
+
 1. Tenha em mãos: razão social **exatamente** como no cartão CNPJ, endereço da sede, telefone e e-mail comercial.
 2. Acesse a ferramenta de consulta da Apple: <https://developer.apple.com/enroll/duns-lookup/>.
 3. Procure a empresa. Se já existir número, anote. Se não, solicite pela própria ferramenta (é gratuito; o pedido vai para a D&B).
@@ -97,6 +101,7 @@ Referências: [Apple — D-U-N-S](https://developer.apple.com/br/help/account/me
 4. Depois, para o **Calendário** (Etapa 3), adicionaremos o escopo da Google Agenda — isso exige verificação do app pelo Google.
 
 **Onde guardar:**
+
 - IDs de cliente (terminam em `.apps.googleusercontent.com`) não são secretos: vão no `.env` local e nas variáveis do EAS.
 - O **segredo do cliente Web** é secreto: cole **só** no painel do Supabase (Authentication → Providers → Google).
 
@@ -127,6 +132,7 @@ Você já tem conta.
 4. Plano: Free serve para desenvolvimento. Lembre que projetos Free pausam após inatividade. Produção precisará do plano Pro (backups diários, sem pausa).
 
 **Onde guardar:**
+
 - `Project URL` e **publishable key** (antiga anon key): vão no `.env` local — não são secretas, a segurança vem da RLS.
 - **secret key / service_role**: **nunca** no app nem no `.env` do app. Só nos segredos das Edge Functions e do CI (GitHub → Settings → Secrets).
 
@@ -187,18 +193,22 @@ Versão de referência: Expo SDK 56 (React Native 0.85). Se o SDK 57 estiver est
 Resumo das regras vigentes que afetam o Sr. Casamentos:
 
 ### Plus/Premium dos noivos e pacotes de mensagens
+
 São recursos digitais desbloqueados no app → pela regra geral precisam de **compra in-app** (Apple 3.1.1; Google Play Billing). Formato: compra única por casamento (produto consumível/não renovável, vinculado ao casamento no nosso backend).
 
 **Novidade no Brasil:**
+
 - **Apple (iOS 26.5, desde jun/2026):** no Brasil é permitido, **ao lado** da compra in-app da Apple, oferecer um meio de pagamento próprio dentro do app e/ou um **link para comprar no nosso site**. Comissões anunciadas pela Apple: link para o site **15%** (10% no Small Business Program); compra no app com pagamento alternativo **10%** (Small Business) ou 21%; usando o pagamento da Apple, **+5%**. A Apple não faz reembolso dessas compras externas. Para menores de 18 anos não pode haver link. Fonte: [Apple Newsroom](https://www.apple.com/newsroom/2026/06/apple-announces-changes-to-ios-in-brazil/).
 - **Google Play:** o Brasil está entre os países com **escolha de faturamento pelo usuário** (user choice billing). As novas taxas reduzidas (10% de serviço) começaram por EUA/Reino Unido/UE em 30/06/2026; o Google ainda não publicou a tabela do Brasil. Fontes: [Google Play — sistemas alternativos](https://support.google.com/googleplay/answer/11174377), [Android Developers Blog](https://android-developers.googleblog.com/2026/06/play-expanded-billing.html).
 
 ### Assinaturas dos assessores
+
 - **Opção 1 — vender só pela web (recomendada para começar):** o assessor assina no painel web (Stripe, Pagar.me ou Mercado Pago com Pix/cartão/boleto). O app do assessor **não mostra preço nem botão de compra** — só faz login. Alguns apps B2B fazem isso como "serviço empresarial" (Apple 3.1.3(c)), mas essa exceção é estrita (venda direta a organizações para seus funcionários). Na prática, o caminho mais seguro é: app sem qualquer menção a compra para o perfil assessor.
 - **Opção 2 — web + link externo no app (só Brasil):** usar a nova regra brasileira para colocar um link de assinatura no app, pagando 15% (ou 10%) à Apple.
 - **Opção 3 — web + compra in-app também:** máxima conversão, maior custo e complexidade (assinatura nas duas lojas + web, conciliação).
 
 ### Recomendação inicial
+
 - Noivos: compra in-app nas duas lojas **e** compra pelo site (RSVP/site do casamento já são web). Avaliar o link externo da Apple no Brasil depois de medir.
 - Assessores: só web, sem menção a compra no app (Opção 1).
 - O código de indicação do assessor funciona nos dois caminhos (aplicado no backend), mas cashback em compras in-app precisa considerar a comissão da loja — revisamos na Etapa 5.

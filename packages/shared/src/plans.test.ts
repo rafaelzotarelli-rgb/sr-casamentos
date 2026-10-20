@@ -24,9 +24,9 @@ describe('planos dos noivos', () => {
 
   it('Free não tem IA, agenda nem acesso da família', () => {
     const free = COUPLE_PLANS.couple_free;
-    expect(free.aiAssistant || free.aiContractAnalysis || free.calendarSync || free.familyAccess).toBe(
-      false,
-    );
+    expect(
+      free.aiAssistant || free.aiContractAnalysis || free.calendarSync || free.familyAccess,
+    ).toBe(false);
   });
 
   it('upgrade de Plus para Premium cobra a diferença', () => {
