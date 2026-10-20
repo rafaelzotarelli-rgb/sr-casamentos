@@ -1,0 +1,7 @@
+packages:
+  - apps/*
+  - packages/*
+
+# React Native/Metro funciona de forma mais previsível com node_modules "achatado".
+# Ver docs/decisoes.md (D17).
+nodeLinker: hoisted

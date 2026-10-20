@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+.next
+.expo
+.turbo
+dist
+coverage
+node_modules
+packages/db/src/database.types.ts
+docs/briefing.md
