@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Lint, typecheck e testes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Auditoria de dependências
+        run: pnpm audit --prod --audit-level high
+
+  database:
+    name: Banco (migrations, RLS e planos)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Sobe só o Postgres local com as migrations
+        run: pnpm exec supabase db start
+      - name: Testes pgTAP (RLS e regras de negócio)
+        run: pnpm exec supabase test db
+      - name: Planos do banco iguais a plans.ts
+        run: |
+          psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -At \
+            -c "select json_object_agg(code, capabilities) from public.plan_capabilities" \
+            | node packages/shared/scripts/check-plans-sync.ts
+      - name: Lint do schema
+        run: pnpm exec supabase db lint --level warning --fail-on error
