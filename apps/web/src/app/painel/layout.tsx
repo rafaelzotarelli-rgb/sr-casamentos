@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { getPanelContext } from '@/lib/agency';
+import { redirect } from 'next/navigation';
 import { signOut } from './actions';
-import { CreateAgencyForm } from './create-agency-form';
 
 export const metadata = { title: { default: 'Painel', template: '%s · Sr. Casamentos' } };
 
@@ -18,26 +18,12 @@ const SOON = [
 ];
 
 export default async function PanelLayout({ children }: { children: ReactNode }) {
-  const { agency, user } = await getPanelContext();
+  const { agency, wedding } = await getPanelContext();
 
+  // O painel é só da assessoria. Noivos vão para a página do casamento; quem
+  // ainda não tem vínculo escolhe o perfil em /inicio (nunca é forçado a criar assessoria).
   if (!agency) {
-    return (
-      <main className="page stack">
-        <h1>Bem-vindo(a)!</h1>
-        <p className="muted">
-          Para usar o painel, cadastre sua assessoria. Se você foi convidado para a equipe de outra
-          assessoria, abra o link do convite que recebeu.
-        </p>
-        <div className="card">
-          <CreateAgencyForm />
-        </div>
-        <form action={signOut}>
-          <button className="button secondary" type="submit">
-            Sair ({user.email})
-          </button>
-        </form>
-      </main>
-    );
+    redirect(wedding ? '/casamento' : '/inicio');
   }
 
   return (

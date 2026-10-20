@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { safeNext } from '@/lib/safe-next';
-import { OAuthButtons } from './oauth-buttons';
-import { PasswordForm } from './password-form';
+import { LoginOptions } from './login-options';
 
 export const metadata: Metadata = { title: 'Entrar' };
 
@@ -19,18 +18,11 @@ export default async function SignInPage({
       <p className="muted">Use a mesma conta do app Sr. Casamentos.</p>
       {erro ? (
         <p className="alert" role="alert">
-          Não foi possível entrar. Tente novamente.
+          Não foi possível entrar. O link pode ter expirado ou ter sido aberto em outro navegador:
+          use o código de 6 dígitos do e-mail.
         </p>
       ) : null}
-      <div className="card stack">
-        <OAuthButtons next={destination} />
-      </div>
-      <details>
-        <summary className="muted">Acesso de demonstração ou administração</summary>
-        <div className="card stack" style={{ marginTop: 12 }}>
-          <PasswordForm next={destination} />
-        </div>
-      </details>
+      <LoginOptions next={destination} />
     </main>
   );
 }

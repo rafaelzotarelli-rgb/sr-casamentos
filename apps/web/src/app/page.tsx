@@ -9,8 +9,8 @@ export default function Home() {
         orçamento ao último convidado na pista.
       </p>
       <div className="row">
-        <Link className="button" href="/painel">
-          Entrar no painel do assessor
+        <Link className="button" href="/inicio">
+          Entrar
         </Link>
       </div>
       <p className="muted">

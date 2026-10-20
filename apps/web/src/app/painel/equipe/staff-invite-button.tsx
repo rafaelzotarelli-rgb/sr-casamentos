@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { createStaffInvite } from '../actions';
-import { InviteLink } from '../invite-link';
+import { InviteLink } from '@/components/invite-link';
 
 export function StaffInviteButton() {
   const [state, action, pending] = useActionState(createStaffInvite, { error: null });

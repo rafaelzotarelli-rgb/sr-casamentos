@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useActionState } from 'react';
+import { ConsentCheckbox } from '@/components/consent-checkbox';
 import { acceptInvite } from './actions';
 
-export function AcceptInviteForm({ token }: { token: string }) {
+export function AcceptInviteForm({ token, askConsent }: { token: string; askConsent: boolean }) {
   const [state, action, pending] = useActionState(acceptInvite, { error: null });
 
   if (state.accepted) {
@@ -11,9 +13,10 @@ export function AcceptInviteForm({ token }: { token: string }) {
       <div className="success stack" role="status">
         <strong>Pronto! Você já faz parte do casamento.</strong>
         <span>
-          Baixe o app Sr. Casamentos no iPhone ou Android e entre com esta mesma conta para começar
-          o planejamento.
+          O planejamento completo fica no app Sr. Casamentos (iPhone e Android): entre com esta
+          mesma conta.
         </span>
+        <Link href="/casamento">Ver o casamento</Link>
       </div>
     );
   }
@@ -21,14 +24,17 @@ export function AcceptInviteForm({ token }: { token: string }) {
   return (
     <form action={action} className="stack">
       <input type="hidden" name="token" value={token} />
+      {askConsent ? <ConsentCheckbox /> : null}
       {state.error ? (
         <p className="alert" role="alert">
           {state.error}
         </p>
       ) : null}
-      <button className="button" type="submit" disabled={pending}>
-        {pending ? 'Aceitando…' : 'Aceitar convite'}
-      </button>
+      <div>
+        <button className="button" type="submit" disabled={pending}>
+          {pending ? 'Aceitando…' : 'Aceitar convite'}
+        </button>
+      </div>
     </form>
   );
 }

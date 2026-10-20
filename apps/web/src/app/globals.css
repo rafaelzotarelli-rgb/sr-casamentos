@@ -103,6 +103,22 @@ a {
   border-color: var(--color-danger);
 }
 
+/* Mais estreito, mas mantém a altura mínima de toque (44px). */
+.button.small {
+  padding: 0 12px;
+  font-size: 0.9rem;
+}
+
+/* Texto só para leitores de tela. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -206,6 +222,21 @@ td {
 .sidebar > span {
   color: var(--color-text-muted);
   gap: 8px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: minmax(140px, max-content) 1fr;
+  gap: 8px 24px;
+  margin: 0;
+}
+
+.details dt {
+  color: var(--color-text-muted);
+}
+
+.details dd {
+  margin: 0;
 }
 
 td .code {
